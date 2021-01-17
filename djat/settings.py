@@ -144,3 +144,5 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR, 'media')
+
+BASE_URL = 'http://127.0.0.1:8000'
