@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 
 from personal.views import home_screen_view
 
-from accounts.views import register_user, login_user, logout_user
+from accounts.views import register_user, login_user, logout_user, account_search_view
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
@@ -34,4 +34,5 @@ urlpatterns = [
                       template_name='accounts/password_reset_complete.html'), name='password_reset_complete'),
 
                   path('account/', include('accounts.urls', namespace='account')),
+                  path('search/', account_search_view, name='search'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
