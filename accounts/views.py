@@ -126,3 +126,18 @@ def account_search_view(request, *args, **kwargs):
             context['accounts'] = accounts
 
     return render(request, 'accounts/search_results.html', context)
+
+
+def edit_account_view(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user_id = kwargs.get('user_id')
+
+    try:
+        account = Account.objects.get(pk=user_id)
+    except Account.DoesNotExist:
+        return HttpResponse('Something went wrong.')
+
+    if request.user.pk != account.pk:
+        return HttpResponse('You cannot edit someone else\'s profile.')
