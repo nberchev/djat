@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 
-from djat.settings import BASE_URL
+from djat.settings import BASE_URL, DATA_UPLOAD_MAX_MEMORY_SIZE
 
-from .forms import RegistrationFrom, AccountAuthenticationForm
+from .forms import RegistrationFrom, AccountAuthenticationForm, AccountUpdateForm
 from .models import Account
 
 
@@ -141,3 +141,38 @@ def edit_account_view(request, *args, **kwargs):
 
     if request.user.pk != account.pk:
         return HttpResponse('You cannot edit someone else\'s profile.')
+
+    context = {}
+
+    if request.POST:
+        form = AccountUpdateForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('account:view', user_id=account.pk)
+        else:
+            form = AccountUpdateForm(request.POST, instance=request.user,
+                                     initial={
+                                         'id': account.pk,
+                                         'email': account.email,
+                                         'username': account.username,
+                                         'profile_image': account.profile_image,
+                                         'hide_email': account.hide_email
+                                     }
+                                     )
+            context['form'] = form
+    else:
+        form = AccountUpdateForm(
+            initial={
+                'id': account.pk,
+                'email': account.email,
+                'username': account.username,
+                'profile_image': account.profile_image,
+                'hide_email': account.hide_email
+            }
+        )
+        context['form'] = form
+
+    context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = DATA_UPLOAD_MAX_MEMORY_SIZE
+
+    return render(request, 'accounts/edit_account.html', context)

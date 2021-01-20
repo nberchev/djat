@@ -17,7 +17,7 @@ class RegistrationFrom(UserCreationForm):
 
         try:
             account = Account.objects.get(email=email)
-        except Exception as ex:
+        except Account.DoesNotExist:
             return email
         raise forms.ValidationError(f'Email {email} is already in use.')
 
@@ -26,7 +26,7 @@ class RegistrationFrom(UserCreationForm):
 
         try:
             account = Account.objects.get(username=username)
-        except Exception as ex:
+        except Account.DoesNotExist:
             return username
         raise forms.ValidationError(f'Username {username} is already in use.')
 
@@ -57,7 +57,7 @@ class AccountUpdateForm(forms.ModelForm):
 
         try:
             account = Account.objects.get(email=email)
-        except Exception as ex:
+        except Account.DoesNotExist:
             return email
         raise forms.ValidationError(f'Email {email} is already in use.')
 
@@ -66,7 +66,7 @@ class AccountUpdateForm(forms.ModelForm):
 
         try:
             account = Account.objects.get(username=username)
-        except Exception as ex:
+        except Account.DoesNotExist:
             return username
         raise forms.ValidationError(f'Username {username} is already in use.')
 
