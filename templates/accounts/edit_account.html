@@ -124,6 +124,51 @@
             cropConfirm.classList.remove('justify-content-between')
             cropConfirm.classList.add('d-none')
         }
+
+        function disableImageOverlay() {
+            let profileImage = document.getElementById('id_profile_image')
+            let middleContainer = document.getElementById('id_middle_container')
+            let imageContainer = document.getElementById('id_image_container')
+            let text = document.getElementById('id_text')
+
+            imageContainer.removeEventListener('mouseover', function (event) {
+                {#profileImage.style.opacity = '0.3'#}
+                {#middleContainer.style.opacity = '1'#}
+            })
+
+            imageContainer.removeEventListener('mouseout', function (event) {
+                {#profileImage.style.opacity = '0.3'#}
+                {#middleContainer.style.opacity = '1'#}
+            })
+
+            profileImage.style.opacity = '1'
+            middleContainer.style.opacity = '0'
+            text.style.cursor = 'default'
+
+            imageContainer.removeEventListener('click', function (event){
+                {#event.preventDefault()#}
+            })
+
+            document.getElementById('id_profile_image').addEventListener('click', function (event) {
+                event.preventDefault()
+            })
+
+            let cropConfirm = document.getElementById('id_image_crop_confirm')
+            cropConfirm.classList.add('d-flex')
+            cropConfirm.classList.add('flex-row')
+            cropConfirm.classList.add('justify-content-between')
+            cropConfirm.classList.remove('d-none')
+
+            let confirm = document.getElementById('id_confirm')
+            confirm.addEventListener('click', function (event) {
+                enableImageOverlay()
+            })
+
+            let cancel = document.getElementById('id_cancel')
+            cancel.addEventListener('click', function (event) {
+                console.log('reloading window')
+            })
+        }
     </script>
 
 {% endblock %}
