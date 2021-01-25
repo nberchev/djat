@@ -1,11 +1,20 @@
+import os
+import json
+import cv2
+import base64
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
+from django.core.files.storage import default_storage, FileSystemStorage
+from django.core import files
 
 from djat.settings import BASE_URL, DATA_UPLOAD_MAX_MEMORY_SIZE
 
 from .forms import RegistrationFrom, AccountAuthenticationForm, AccountUpdateForm
 from .models import Account
+
+TEMP_PROFILE_IMAGE_NAME = 'temp_profile_image.png'
 
 
 def register_user(request, *args, **kwargs):
@@ -177,3 +186,24 @@ def edit_account_view(request, *args, **kwargs):
     context['DATA_UPLOAD_MAX_MEMORY_SIZE'] = DATA_UPLOAD_MAX_MEMORY_SIZE
 
     return render(request, 'accounts/edit_account.html', context)
+
+
+def save_temp_profile_image_from_base64String(imageString, user):
+    INCORRECT_PADDING_EXCEPTION = 'Incorrect padding'
+
+    try:
+        pass
+    except Exception as ex:
+        raise ex
+
+
+def crop_image(request, *args, **kwargs):
+    payload = {}
+    user = request.user
+
+    if request.POST and user.is_authenticated:
+        try:
+            imageString = request.POST.get('image')
+            url = save_temp_profile_image_from_base64String(imageString, user)
+        except Exception as ex:
+            raise ex

@@ -148,3 +148,5 @@ MEDIA_ROOT = join(BASE_DIR, 'media')
 BASE_URL = 'http://127.0.0.1:8000'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
+
+TEMP = join(BASE_DIR, 'media/temp')
